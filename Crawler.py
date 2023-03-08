@@ -30,12 +30,9 @@ for a in albums:
     album_data["type"] = album_data["year"][0]
     album_data["year"] = album_data["year"][2]
     artist["albums"].append(album_data)
-    
-    # print(album_data, "\n")
 
+# escrever dados num .json
 jsonStr = json.dumps(artist, indent=4, ensure_ascii=True)
 jsonFile = open("artists.json", "w")
 jsonFile.write(jsonStr)
 jsonFile.close()
-
-# escrever dados num .json
