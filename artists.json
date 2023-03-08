@@ -1,0 +1,53 @@
+{
+    "name": "ANGRA",
+    "albums": [
+        {
+            "name": "\u00d8MNI",
+            "img": "https://i.scdn.co/image/ab67616d00001e02a2e3e652e40fdea202ccb3a9",
+            "year": "2018",
+            "type": "Album"
+        },
+        {
+            "name": "Secret Garden",
+            "img": "https://i.scdn.co/image/ab67616d00001e026b5d85b02eed30851a8ede1b",
+            "year": "2015",
+            "type": "Album"
+        },
+        {
+            "name": "Angels Cry - 20th Anniversary Tour (Live)",
+            "img": "https://i.scdn.co/image/ab67616d00001e0246e05e6720691ee780fd826e",
+            "year": "2014",
+            "type": "Album"
+        },
+        {
+            "name": "Aqua",
+            "img": "https://i.scdn.co/image/ab67616d00001e02d76c010e4e4d511d476d4e24",
+            "year": "2010",
+            "type": "Album"
+        },
+        {
+            "name": "Aurora Consurgens",
+            "img": "https://i.scdn.co/image/ab67616d00001e027cbb22fefc6aab1c2af2213b",
+            "year": "2006",
+            "type": "Album"
+        },
+        {
+            "name": "Temple of Shadows",
+            "img": "https://i.scdn.co/image/ab67616d00001e020bd5c7b29c599512ebf50903",
+            "year": "2004",
+            "type": "Album"
+        },
+        {
+            "name": "Rebirth World Tour: Live in S\u00e3o Paulo",
+            "img": "https://i.scdn.co/image/ab67616d00001e02118b3921afa2ce2bc45d947c",
+            "year": "2002",
+            "type": "Album"
+        },
+        {
+            "name": "Hunters and Prey",
+            "img": "https://i.scdn.co/image/ab67616d00001e0206534afb646d97496639d5c7",
+            "year": "2002",
+            "type": "Album"
+        }
+    ]
+}
