@@ -1,38 +1,91 @@
 from bs4 import BeautifulSoup
 import json
 
-artist = dict()
 
-# abrir discographySource.html e decodificar com o bs4
-with open("source.html", "rb") as f:
-    soup = BeautifulSoup(f, features="html.parser")
+class Crawler:
 
-# achar tags que contenha cabeçalho dos albuns/singles
-discographyHeader = soup.find("h2", string="Albums")
-artist["name"] = soup.find("h1", "gj6rSoF7K4FohS2DJDEm").string
-artist["albums"] = []
+    def __init__(self, artistHtmlSource):
+        self.artist = dict()
+        self.artist["name"] = ""
+        self.artist["albums"] = []
+        self.artist["singles"] = []
+        self.artist["similarArtists"] = []
+        
+        self.artistHtmlSource = artistHtmlSource
+        self.soup = None
+        
+        self.albumsSection = None
+        self.singlesSection = None
+        self.similarArtistsSection = None
+        
+        with open(self.artistHtmlSource, "rb") as f:
+            self.soup = BeautifulSoup(f, features="html.parser")
 
-# achar seção superior da tag cabeçalho
-albumsSection = discographyHeader.find_parent("div").find_parent("div")
-
-# achar albuns dentro da tag cabeçalho
-albums = albumsSection.find_all("a")
-
-# iterar albuns e extrair info
-for a in albums:
-    album_data = dict()
+        self.artist["name"] = self.soup.find("h1", "gj6rSoF7K4FohS2DJDEm").string
     
-    album_data["name"] = a.find_all("span")[0].string                       # ALBUM NAME
-    album_data["img"] = a.find_all("div")[0].find_all("img")[0]["src"]      # ALBUM COVER
-    album_data["year"] = a.find_all("div")[1].string                        # [ ALBUM o YEAR ]
-    
-    album_data["year"] = album_data["year"].split(" ")
-    album_data["type"] = album_data["year"][0]
-    album_data["year"] = album_data["year"][2]
-    artist["albums"].append(album_data)
+    def setSections(self):
+       # acha tags que contenha cabeçalho dos albuns/singles
+        albumsSection = self.soup.find("h2", string="Albums")
+        singlesSection = self.soup.find("h2", string="Singles and EPs")
+        similarArtistsSection = self.soup.find("h2", string="Fans also like")
 
-# escrever dados num .json
-jsonStr = json.dumps(artist, indent=4, ensure_ascii=True)
-jsonFile = open("artists.json", "w")
-jsonFile.write(jsonStr)
-jsonFile.close()
+        # acha seção superior da tag cabeçalho
+        albumsSectionParent = albumsSection.find_parent("div").find_parent("div")
+        singlesSectionParent = singlesSection.find_parent("div").find_parent("div")
+        similarArtistsSection = similarArtistsSection.find_parent("div").find_parent("div")
+
+        # acha albuns/singles dentro da tag cabeçalho
+        self.albumsSection = albumsSectionParent.find_all("a")
+        self.singlesSection = singlesSectionParent.find_all("a")
+        self.similarArtistsSection = similarArtistsSection.find_all("a")
+
+    def extractMusicInfo(self, infoType):
+        section = []
+        
+        if infoType == "similarArtists":
+            section = self.similarArtistsSection
+            
+            for sect in section:
+                data = dict()
+                data["name"] = sect.find_all("span")[0].string                       # NAME
+                self.artist[infoType].append(data)
+            return
+        
+        elif infoType == "albums":
+            section = self.albumsSection
+        
+        elif infoType == "singles":
+            section = self.singlesSection
+        
+        #itera section e extrai informacoes dela
+        for sect in section:
+            data = dict()
+        
+            data["name"] = sect.find_all("span")[0].string                       # NAME
+            data["img"] = sect.find_all("div")[0].find_all("img")[0]["src"]      # COVER
+            data["year"] = sect.find_all("div")[1].string                        # [ TYPE o YEAR ]
+            
+            data["year"] = data["year"].split(" ")
+            data["type"] = data["year"][0]
+            data["year"] = data["year"][2]
+            self.artist[infoType].append(data)
+            
+    def createJson(self):
+        # escrever dados num .json
+        fileName = self.artist["name"] + ".json"
+        
+        jsonStr = json.dumps(self.artist, indent=4, ensure_ascii=True)
+        jsonFile = open(fileName, "w")
+        jsonFile.write(jsonStr)
+        jsonFile.close()
+
+
+
+
+
+craw = Crawler("source.html")
+craw.setSections()
+craw.extractMusicInfo("albums")
+craw.extractMusicInfo("singles")
+craw.extractMusicInfo("similarArtists")
+craw.createJson()
