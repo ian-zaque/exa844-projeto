@@ -21,6 +21,7 @@ class Crawler:
         with open(self.artistHtmlSource, "rb") as f:
             self.soup = BeautifulSoup(f, features="html.parser")
 
+        # gj6rSoF7K4FohS2DJDEm é uma classe que marca o nome do artista
         self.artist["name"] = self.soup.find("h1", "gj6rSoF7K4FohS2DJDEm").string
     
     def setSections(self):
