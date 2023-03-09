@@ -81,11 +81,12 @@ class Crawler:
 
 
 
+sourceFiles = ["gojira.html", "angra.html", "opeth.html", "bowie.html"]
 
-
-craw = Crawler("source.html")
-craw.setSections()
-craw.extractMusicInfo("albums")
-craw.extractMusicInfo("singles")
-craw.extractMusicInfo("similarArtists")
-craw.createJson()
+for file in sourceFiles:
+    craw = Crawler(file)
+    craw.setSections()
+    craw.extractMusicInfo("albums")
+    craw.extractMusicInfo("singles")
+    craw.extractMusicInfo("similarArtists")
+    craw.createJson()
