@@ -1,0 +1,31 @@
+{
+    "name": "",
+    "albums": [
+        {
+            "name": "",
+            "img": "",
+            "year": 2021,
+            "type": ""
+        },
+        {
+            "name": "",
+            "img": "",
+            "year": 2017,
+            "type": ""
+        }
+    ],
+    "singles": [
+        {
+            "name": "",
+            "img": "",
+            "year": 2020,
+            "type": "Single"
+        }
+    ],
+    "similarArtists": [
+        {
+            "name": ""
+        }
+    ],
+    "UID": ""
+}
