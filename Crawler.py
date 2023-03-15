@@ -82,10 +82,8 @@ class Crawler:
     def createJson(self):
         # escrever dados num .json
         if "/" in self.artist["name"] or "\\" in self.artist["name"]:
-            print("NOME: ",  self.artist["name"])
             self.artist["name"] = self.artist["name"].replace("/","-")
             self.artist["name"] = self.artist["name"].replace("\\","-")
-            print("NOME: ",  self.artist["name"])
             
         fileName = "./artists/" + self.artist["name"] + ".json"
 
