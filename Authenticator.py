@@ -1,40 +1,38 @@
-from Credentials import CLIENT_ID, CLIENT_SECRET, URL
-import base64, requests, json
+from Credentials import CLIENT_ID, CLIENT_SECRET, USER
+import urllib.request
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 from Crawler import Crawler
 
-print("0000")
+auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+sp = spotipy.Spotify(auth_manager=auth_manager)
 
-url = "https://accounts.spotify.com/api/token"
-headers = {}
-data = {}
+playlists = sp.user_playlists(USER)
+artists_list = []
 
-# Encode as Base64
-message = f"{CLIENT_ID}:{CLIENT_SECRET}"
-messageBytes = message.encode('ascii')
-base64Bytes = base64.b64encode(messageBytes)
-base64Message = base64Bytes.decode('ascii')
+while playlists:
+    for i, playlist in enumerate(playlists['items']):
+        tracks = sp.playlist_items(playlist_id=playlist['id'], fields=["items"], offset=0, limit=100)
+        for tr in tracks["items"]:
+            # print(tr["track"]["name"], tr["track"]["artists"][0]["id"], tr["track"]["artists"][0]["name"],  "\n")
+            id = tr["track"]["artists"][0]["id"]
+            if id not in artists_list:
+                artists_list.append(id)
 
-print("1111")
+    if playlists['next']:
+        playlists = sp.next(playlists)
+    else:
+        playlists = None
 
-headers['Authorization'] = f"Basic {base64Message}"
-data['grant_type'] = "client_credentials"
+for link in artists_list:
+    link = "https://open.spotify.com/artist/"  + link
+    link = link.strip()
+    page = urllib.request.urlopen(link)
+    html = str(page.read().decode('utf-8'))
 
-print("2222")
-
-r = requests.post(url, headers=headers, data=data)
-
-print("3333")
-
-token = r.json()['access_token']
-
-print("TOKEN: ", token)
-
-headers = {
-    "Authorization": "Bearer " + token,
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-}
-
-res = requests.get(url=URL, headers=headers)
-print(json.dumps(res.json(), indent=2))
-
+    craw = Crawler(html, link)
+    craw.setSections()
+    craw.extractMusicInfo("albums")
+    craw.extractMusicInfo("singles")
+    craw.extractMusicInfo("similarArtists")
+    craw.createJson()

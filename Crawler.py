@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 import json
-import urllib.request
 
 class Crawler:
 
@@ -10,6 +9,8 @@ class Crawler:
         self.artist["albums"] = []
         self.artist["singles"] = []
         self.artist["similarArtists"] = []
+        self.artist["URL"] = url
+        self.artist["UID"] = url.split("/")[4]
 
         self.soup = None
 
@@ -18,9 +19,8 @@ class Crawler:
         self.similarArtistsSection = None
 
         self.soup = BeautifulSoup(html, 'html.parser')
-
+        
         # gj6rSoF7K4FohS2DJDEm é uma classe que marca o nome do artista
-        self.artist["UID"] = url.split("/")[4]
         self.artist["name"] = self.soup.find("h1", "gj6rSoF7K4FohS2DJDEm").string
 
     def setSections(self):
@@ -81,27 +81,15 @@ class Crawler:
 
     def createJson(self):
         # escrever dados num .json
+        if "/" in self.artist["name"] or "\\" in self.artist["name"]:
+            print("NOME: ",  self.artist["name"])
+            self.artist["name"] = self.artist["name"].replace("/","-")
+            self.artist["name"] = self.artist["name"].replace("\\","-")
+            print("NOME: ",  self.artist["name"])
+            
         fileName = "./artists/" + self.artist["name"] + ".json"
 
         jsonStr = json.dumps(self.artist, indent=4, ensure_ascii=True)
         jsonFile = open(fileName, "w")
         jsonFile.write(jsonStr)
         jsonFile.close()
-
-
-with open("artists.txt") as f:
-    links = f.readlines()
-# https://spclient.wg.spotify.com/user-profile-view/v3/profile/2124wohtd26bam7kcuvhvwgii/following?market=from_token
-
-
-for link in links:
-    link = link.strip()
-    page = urllib.request.urlopen(link)
-    html = str(page.read().decode('utf-8'))
-
-    craw = Crawler(html, link)
-    craw.setSections()
-    craw.extractMusicInfo("albums")
-    craw.extractMusicInfo("singles")
-    craw.extractMusicInfo("similarArtists")
-    craw.createJson()

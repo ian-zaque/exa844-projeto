@@ -1,1 +1,3 @@
-/artists\
+/artists
+__pycache__
+.cache
