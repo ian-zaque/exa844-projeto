@@ -5,7 +5,7 @@ O objetivo da parte 1 do projeto da disciplina [EXA844](https://sites.google.com
 É inserido o UID do usuário no arquivo [Credential.PY](https://github.com/ian-zaque/exa844-projeto/blob/main/Credentials.py) - no campo USER - que se deseja obter artistas ouvidos através de suas playlists públicas. As playlists são processadas, seleciona-se as 100 primeiras músicas, filtra-se os artistas para que exista apenas 1 ocorrência de cada. Com os UIDs dos artistas, a página dele no Spotify é acessada, raspada e tem os dados estruturados.
 Com os dados dos artistas já estruturados, é criado um JSON respectivo contendo nome, id único, url, álbuns e singles. Posterioremente será disponibilizado uma API REST para acesso desses dados.
 
-Foram utilizadas as bibliotecas [Beautiful Soup 4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) para manipulação e raspagem HTML e [Spotipy](https://spotipy.readthedocs.io/en/2.22.1/#installation).
+Foram utilizadas as bibliotecas [Beautiful Soup 4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) para manipulação e raspagem HTML e [Spotipy](https://spotipy.readthedocs.io/en/2.22.1/#installation) para acessar com token (credenciais de ID e Secret geradas no Developer Dashboard do Spotify) páginas protegidas.
 
 ## Links
 Os links a serem buscados são a página principal de um usuário qualquer do Spotify ou somente seu UID respectivo.
