@@ -10,7 +10,7 @@ para acesso desses dados.
 ## Links
 Os links a serem buscados são a página principal de um usuário qualquer do Spotify ou somente seu UID respectivo.
 Exemplos:
-- [Ian Zaque](https://open.spotify.com/user/2124wohtd26bam7kcuvhvwgii)
+- [open.spotify.com/user/2124wohtd26bam7kcuvhvwgii](https://open.spotify.com/user/2124wohtd26bam7kcuvhvwgii)
 - [2124wohtd26bam7kcuvhvwgii](https://open.spotify.com/user/2124wohtd26bam7kcuvhvwgii)
 
 ## Esquema
@@ -50,7 +50,6 @@ Os dados serão estruturados em JSONs da seguinte [forma](https://github.com/ian
     "UID": ""
 }
 ```
-
 
 ## Exemplo Real
 O aquivo [Avenged Sevenfold.json](https://github.com/ian-zaque/exa844-projeto/blob/main/Avenged%20Sevenfold.json) é um exemplo real de um artista que foi buscado e estruturado.
@@ -187,8 +186,4 @@ O aquivo [Avenged Sevenfold.json](https://github.com/ian-zaque/exa844-projeto/bl
     "URL": "https://open.spotify.com/artist/0nmQIMXWTXfhgOBdNzhGOs",
     "UID": "0nmQIMXWTXfhgOBdNzhGOs"
 }
-
-
-
-
-
+```
