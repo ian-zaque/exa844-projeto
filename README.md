@@ -10,7 +10,6 @@ Foram utilizadas as bibliotecas [Beautiful Soup 4](https://www.crummy.com/softwa
 ## Links
 Os links a serem buscados são a página principal de um usuário qualquer do Spotify ou somente seu UID respectivo.
 Exemplos:
-- [open.spotify.com/user/2124wohtd26bam7kcuvhvwgii](https://open.spotify.com/user/2124wohtd26bam7kcuvhvwgii)
 - [2124wohtd26bam7kcuvhvwgii](https://open.spotify.com/user/2124wohtd26bam7kcuvhvwgii)
 
 ## Esquema
