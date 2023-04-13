@@ -1,8 +1,8 @@
 from Credentials import CLIENT_ID, CLIENT_SECRET, USER
-import urllib.request
-import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from Crawler import Crawler
+import urllib.request
+import spotipy
 
 auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
 sp = spotipy.Spotify(auth_manager=auth_manager)

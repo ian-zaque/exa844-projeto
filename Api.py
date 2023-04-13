@@ -1,7 +1,13 @@
 from flask import Flask
 import json
+import pymongo
+from bson.json_util import dumps, loads
 
 app = Flask(__name__)
+
+dbConnection = pymongo.MongoClient("mongodb+srv://exa844:hwQfmACAGrTOZFdC@cluster0.crpzagf.mongodb.net/test")
+database = dbConnection["artists"]
+collection = database["artists"]
 
 @app.route("/")
 def home():
@@ -15,69 +21,56 @@ def home():
 
 @app.route("/artist/<name>/")
 def getArtistByName(name):
-    try:
-        fileName = "./artists/" + name + ".json"
-        artist = open(fileName)
-        artistFile = json.load(artist)
-        return artistFile
+    # try:
+    artist = collection.find({"name": name})
+    artist = dumps(list(artist), indent = 2)
+    return artist
     
-    except Exception as e:
-        return json.dumps(e)
+    # except Exception as e:
+    #     return json.dumps(e)
     
 @app.route("/artist/<name>/albums/")
 def getAlbumsByArtistName(name):
-    try:
-        fileName = "./artists/" + name + ".json"
-        artist = open(fileName)
-        artistFile = json.load(artist)
-        
-        albums = dict()
-        albums["albums"] = artistFile["albums"]
-        return json.dumps(albums)
+    # try:
+    artist = collection.find({"name": name}, {"albums":1,"_id":0})
+    artist = dumps(list(artist), indent = 2)
     
-    except Exception as e:
-        return json.dumps(e)
+    return json.dumps(artist)
+    
+    # except Exception as e:
+    #     return json.dumps(e)
 
 @app.route("/artist/<name>/singles/")
 def getSinglesByArtistName(name):
-    try:
-        fileName = "./artists/" + name + ".json"
-        artist = open(fileName)
-        artistFile = json.load(artist)
-        
-        singles = dict()
-        singles["singles"] = artistFile["singles"]
-        return json.dumps(singles)
+    # try:
+    artist = collection.find({"name": name}, {"singles":1,"_id":0})
+    artist = dumps(list(artist), indent = 2)
     
-    except Exception as e:
-        return json.dumps(e) 
+    return json.dumps(artist)
+    
+    # except Exception as e:
+    #     return json.dumps(e) 
 
 @app.route("/artist/<name>/similar/")
 def getSimilarArtistsByArtistName(name):
-    try:
-        fileName = "./artists/" + name + ".json"
-        artist = open(fileName)
-        artistFile = json.load(artist)
-        
-        similarArtists = dict()
-        similarArtists["similarArtists"] = artistFile["similarArtists"]
-        return json.dumps(similarArtists)
+    # try:
+    artist = collection.find({"name": name}, {"similarArtists":1,"_id":0})
+    artist = dumps(list(artist), indent = 2)
     
-    except Exception as e:
-        return json.dumps(e)
+    return json.dumps(artist)
+    
+    # except Exception as e:
+    #     return json.dumps(e)
 
 @app.route("/artist/<name>/url/")
 def getUrlByArtistName(name):
-    try:
-        fileName = "./artists/" + name + ".json"
-        artist = open(fileName)
-        artistFile = json.load(artist)
-        
-        url = dict()
-        url["URL"] = artistFile["URL"]
-        return json.dumps(url)
+    # try:
+    artist = collection.find({"name": name}, {"URL":1,"_id":0})
+    artist = dumps(list(artist), indent = 2)
+   
+    return json.dumps(artist)
     
-    except Exception as e:
-        return json.dumps(e)
+    # except Exception as e:
+    #     return json.dumps(e)
 
 app.run()

@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import json
-
+import pymongo
 class Crawler:
 
     def __init__(self, html, url):
@@ -22,6 +22,9 @@ class Crawler:
         
         # gj6rSoF7K4FohS2DJDEm é uma classe que marca o nome do artista
         self.artist["name"] = self.soup.find("h1", "gj6rSoF7K4FohS2DJDEm").string
+
+        # self.dbConnection = pymongo.MongoClient("mongodb+srv://exa844:<hwQfmACAGrTOZFdC>@cluster0.crpzagf.mongodb.net/test")
+        # self.database = self.dbConnection.artists.artists
 
     def setSections(self):
        # acha tags que contenha cabeçalho dos albuns/singles
@@ -87,7 +90,17 @@ class Crawler:
             
         fileName = "./artists/" + self.artist["name"] + ".json"
 
-        jsonStr = json.dumps(self.artist, indent=4, ensure_ascii=True)
-        jsonFile = open(fileName, "w")
-        jsonFile.write(jsonStr)
-        jsonFile.close()
+        # jsonStr = json.dumps(self.artist, indent=4, ensure_ascii=True)
+
+        # try:
+        dbConnection = pymongo.MongoClient("mongodb+srv://exa844:hwQfmACAGrTOZFdC@cluster0.crpzagf.mongodb.net/test")
+        database = dbConnection["artists"]
+        collection = database["artists"]
+        artista = collection.insert_one(self.artist).inserted_id
+        print(artista)
+        # except Exception as e:
+        #     return e
+
+        # jsonFile = open(fileName, "w")
+        # jsonFile.write(jsonStr)
+        # jsonFile.close()
