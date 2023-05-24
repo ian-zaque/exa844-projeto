@@ -1,7 +1,7 @@
 from bson.json_util import dumps
 import functions_framework
 import pymongo
-import json
+import json, re
 from flask_cors import cross_origin
 
 @cross_origin()
@@ -19,7 +19,8 @@ def hello_http(request):
     if request.args.get('name') != '' and request.args.get('option') == "":
         try:
             name = request.args.get('name')
-            artist = collection.find({"name": name})
+            regex = re.compile(f".*{name}.*", re.IGNORECASE)
+            artist = collection.find({"name": {"$regex": regex} })
             artist = dumps(list(artist), indent = 2)
 
             map["result"] = artist
@@ -31,7 +32,8 @@ def hello_http(request):
     elif request.args.get('name') != '' and request.args.get('option') == "albums":
         try:
             name = request.args.get('name')
-            artist = collection.find({"name": name}, {"albums":1,"_id":0})
+            regex = re.compile(f".*{name}.*", re.IGNORECASE)
+            artist = collection.find({"name": {"$regex": regex} }, {"albums":1,"_id":0})
             artist = dumps(list(artist), indent = 2)
 
             map["result"] = artist
@@ -42,7 +44,8 @@ def hello_http(request):
     elif request.args.get('name') != '' and request.args.get('option') == "singles":
         try:
             name = request.args.get('name')
-            artist = collection.find({"name": name}, {"singles":1,"_id":0})
+            regex = re.compile(f".*{name}.*", re.IGNORECASE)
+            artist = collection.find({"name": {"$regex": regex} }, {"singles":1,"_id":0})
             artist = dumps(list(artist), indent = 2)
 
             map["result"] = artist
@@ -53,7 +56,8 @@ def hello_http(request):
     elif request.args.get('name') != '' and request.args.get('option') == "similar":
         try:
             name = request.args.get('name')
-            artist = collection.find({"name": name}, {"similarArtists":1,"_id":0})
+            regex = re.compile(f".*{name}.*", re.IGNORECASE)
+            artist = collection.find({"name": {"$regex": regex} }, {"similarArtists":1,"_id":0})
             artist = dumps(list(artist), indent = 2)
 
             map["result"] = artist
@@ -64,7 +68,8 @@ def hello_http(request):
     elif request.args.get('name') != '' and request.args.get('option') == "url":
         try:
             name = request.args.get('name')
-            artist = collection.find({"name": name}, {"URL":1,"_id":0})
+            regex = re.compile(f".*{name}.*", re.IGNORECASE)
+            artist = collection.find({"name": {"$regex": regex} }, {"URL":1,"_id":0})
             artist = dumps(list(artist), indent = 2)
 
             map["result"] = artist
