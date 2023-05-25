@@ -40,3 +40,7 @@ class Authenticator:
             craw.extractMusicInfo("singles")
             craw.extractMusicInfo("similarArtists")
             craw.createJson()
+
+profile = input("Insira um perfil Spotify: ")
+auth = Authenticator(profileLink=profile)
+auth.scanProfile()

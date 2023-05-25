@@ -88,12 +88,14 @@ class Crawler:
             self.artist["name"] = self.artist["name"].replace("/","-")
             self.artist["name"] = self.artist["name"].replace("\\","-")
             
-        fileName = "./artists/" + self.artist["name"] + ".json"
-
+        # fileName = "./artists/" + self.artist["name"] + ".json"
         # jsonStr = json.dumps(self.artist, indent=4, ensure_ascii=True)
 
         dbConnection = pymongo.MongoClient("mongodb+srv://exa844:hwQfmACAGrTOZFdC@cluster0.crpzagf.mongodb.net/test")
         database = dbConnection["artists"]
         collection = database["artists"]
-        artista = collection.insert_one(self.artist).inserted_id
-        print(artista)
+
+        condicao = {"UID": self.artist["UID"]}
+        artista = collection.update_one(condicao, {"$set": self.artist}, upsert=True)
+        # artista = collection.insert_one(self.artist).inserted_id
+        print(artista, self.artist["name"])
