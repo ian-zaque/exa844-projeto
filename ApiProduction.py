@@ -3,6 +3,7 @@ import functions_framework
 import pymongo
 import json, re
 from flask_cors import cross_origin
+from Authenticator import Authenticator
 
 @cross_origin()
 
@@ -15,6 +16,7 @@ def hello_http(request):
     collection = database["artists"]
 
     # /hello_http/artist?name=<name>&option=<option>
+    # /hello_http/profile?id=<id>
 
     if request.args.get('name') != '' and request.args.get('option') == "":
         try:
@@ -74,6 +76,16 @@ def hello_http(request):
 
             map["result"] = artist
 
+        except Exception as e:
+            map["message"] = 'Error: {}'.format(str(e))
+
+    elif request.args.get('id') != '':
+        try:
+            profileLink = request.args.get('id')
+            auth = Authenticator(profileLink=profileLink)
+            auth.scanProfile()
+            map["message"] = "success"
+        
         except Exception as e:
             map["message"] = 'Error: {}'.format(str(e))
 

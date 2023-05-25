@@ -92,15 +92,8 @@ class Crawler:
 
         # jsonStr = json.dumps(self.artist, indent=4, ensure_ascii=True)
 
-        # try:
         dbConnection = pymongo.MongoClient("mongodb+srv://exa844:hwQfmACAGrTOZFdC@cluster0.crpzagf.mongodb.net/test")
         database = dbConnection["artists"]
         collection = database["artists"]
         artista = collection.insert_one(self.artist).inserted_id
         print(artista)
-        # except Exception as e:
-        #     return e
-
-        # jsonFile = open(fileName, "w")
-        # jsonFile.write(jsonStr)
-        # jsonFile.close()

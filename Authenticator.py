@@ -1,38 +1,42 @@
-from Credentials import CLIENT_ID, CLIENT_SECRET, USER
+from Credentials import CLIENT_ID, CLIENT_SECRET
 from spotipy.oauth2 import SpotifyClientCredentials
 from Crawler import Crawler
 import urllib.request
 import spotipy
 
-auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
-sp = spotipy.Spotify(auth_manager=auth_manager)
+class Authenticator:
 
-playlists = sp.user_playlists(USER)
-artists_list = []
+    def __init__(self, profileLink):
+        self.auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+        self.sp = spotipy.Spotify(auth_manager= self.auth_manager)
 
-while playlists:
-    for i, playlist in enumerate(playlists['items']):
-        tracks = sp.playlist_items(playlist_id=playlist['id'], fields=["items"], offset=0, limit=100)
-        for tr in tracks["items"]:
-            # print(tr["track"]["name"], tr["track"]["artists"][0]["id"], tr["track"]["artists"][0]["name"],  "\n")
-            id = tr["track"]["artists"][0]["id"]
-            if id not in artists_list:
-                artists_list.append(id)
+        self.playlists = self.sp.user_playlists(profileLink)
+        self.artists_list = []
 
-    if playlists['next']:
-        playlists = sp.next(playlists)
-    else:
-        playlists = None
+    def scanProfile(self):
+        while self.playlists:
+            for i, playlist in enumerate(self.playlists['items']):
+                tracks = self.sp.playlist_items(playlist_id=playlist['id'], fields=["items"], offset=0, limit=100)
+                for tr in tracks["items"]:
+                    # print(tr["track"]["name"], tr["track"]["artists"][0]["id"], tr["track"]["artists"][0]["name"],  "\n")
+                    id = tr["track"]["artists"][0]["id"]
+                    if id not in self.artists_list:
+                        self.artists_list.append(id)
 
-for link in artists_list:
-    link = "https://open.spotify.com/artist/"  + link
-    link = link.strip()
-    page = urllib.request.urlopen(link)
-    html = str(page.read().decode('utf-8'))
+            if self.playlists['next']:
+                self.playlists = self.sp.next(self.playlists)
+            else:
+                self.playlists = None
 
-    craw = Crawler(html, link)
-    craw.setSections()
-    craw.extractMusicInfo("albums")
-    craw.extractMusicInfo("singles")
-    craw.extractMusicInfo("similarArtists")
-    craw.createJson()
+        for link in self.artists_list:
+            link = "https://open.spotify.com/artist/"  + link
+            link = link.strip()
+            page = urllib.request.urlopen(link)
+            html = str(page.read().decode('utf-8'))
+
+            craw = Crawler(html, link)
+            craw.setSections()
+            craw.extractMusicInfo("albums")
+            craw.extractMusicInfo("singles")
+            craw.extractMusicInfo("similarArtists")
+            craw.createJson()
